@@ -8,7 +8,7 @@
 document.addEventListener('DOMContentLoaded', onReady);
 
 function onReady() {
-    var stateSelector = document.getElementById('stateSelector');
+    var stateSelector = document.getElementById('stateSelect');
     var i;
     var option;
     for (i = 0; i < usStates.length; i++) {
@@ -36,7 +36,7 @@ function onReady() {
         }
     });
 
-    var signup = document.getElementById(signup);
+    var signup = document.getElementById('signup');
     signup.addEventListener('submit', onSubmit);
 }
 
@@ -101,7 +101,7 @@ function validateBirthdate(field) {
         }
     }
     else {
-        bdMessage.innerHTML = "Please tell me when you were born."
+        bdMessage.innerHTML = "Please tell me when you were born.";
         field.className = 'form-control invalid';
         return false;
     }
