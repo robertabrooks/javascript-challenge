@@ -44,7 +44,66 @@ function onSubmit(eventObject) {
     var fields = ['firstName', 'lastName', 'address1', 'city', 'state'];
     var i;
     var formValid = true;
-    for (i = 0; i <)
+    for (i = 0; i < 5; i++) {
+        formValid &= validateName(signup.elements[fields[idx]]);
+    }
+    if (signup.elements['occupation'].value == 'other') {
+        formValid &= validateName(signup.elements['occupationOther']);
+    }
+    formValid &= validateBirthdate(signup.elements['birthdate']);
+    formValid &= validateZip(signup.elements['zip']);
+    if (!formValid) {
+        if(eventObject.preventDefault) {
+            eventObject.preventDefault();
+        }
+        eventObject.returnValue = false;
+        return false;
+    }
+    return formValid;
+}
 
+function validateZip(field) {
+    var zipRegExp = new RegExp('^\\d{5}$');
+    if (!zipRegExp.test(field.value)) {
+        field.className = 'form-control invalid';
+        field.placeholder = 'Please enter a 5 digit zip code';
+        return false;
+    }
+    else {
+        field.className = 'form-control';
+        return true;
+    }
+}
+
+function validateName(field) {
+
+}
+
+function validateBirthdate(field) {
+    var bdMessage = document.getElementById('birthdateMessage');
+    if (field.value) {
+        var today = new Date();
+        var birthDate = new Date(field.value);
+    var dayDifference = today.getDate() - birthDate.getUTCDate();
+    var monthDifference = today.getMonth() - birthDate.getUTCMonth();
+    var yearDifference = today.getFullYear() - birthDate.getUTCFullYear();
+    if (monthDifference < 0 || (0 === monthDifference && dayDifference < 0)) {
+        yearDifference--;
+    }
+        field.className = 'form-control';
+        if (yearDifference < 13) {
+            bdMessage.innerHTML = "Sorry you must at least 13 years old in order to sign up."
+            return false;
+        }
+        else {
+            bdMessage.innerHTML = '';
+            return true;
+        }
+    }
+    else {
+        bdMessage.innerHTML = "Please tell me when you were born."
+        field.className = 'form-control invalid';
+        return false;
+    }
 }
 
