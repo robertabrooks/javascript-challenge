@@ -3,7 +3,7 @@
     This script will load the state select list and validate the form before submission
 */
 
-"use strict"
+"use strict";
 
 document.addEventListener('DOMContentLoaded', onReady);
 
@@ -29,7 +29,7 @@ function onReady() {
         }
     });
 
-    var exitButton = document.getElementById('exitButton');
+    var exitButton = document.getElementById('cancelButton');
     exitButton.addEventListener('click', function() {
         if (window.confirm("Are you sure you want to leave?")) {
             window.location = 'http://google.com';
@@ -45,7 +45,7 @@ function onSubmit(eventObject) {
     var i;
     var formValid = true;
     for (i = 0; i < 5; i++) {
-        formValid &= validateName(signup.elements[fields[idx]]);
+        formValid &= validateName(signup.elements[fields[i]]);
     }
     if (signup.elements['occupation'].value == 'other') {
         formValid &= validateName(signup.elements['occupationOther']);
@@ -75,24 +75,20 @@ function validateZip(field) {
     }
 }
 
-function validateName(field) {
-
-}
-
 function validateBirthdate(field) {
     var bdMessage = document.getElementById('birthdateMessage');
     if (field.value) {
         var today = new Date();
         var birthDate = new Date(field.value);
-    var dayDifference = today.getDate() - birthDate.getUTCDate();
-    var monthDifference = today.getMonth() - birthDate.getUTCMonth();
-    var yearDifference = today.getFullYear() - birthDate.getUTCFullYear();
-    if (monthDifference < 0 || (0 === monthDifference && dayDifference < 0)) {
-        yearDifference--;
-    }
+        var dayDifference = today.getDate() - birthDate.getUTCDate();
+        var monthDifference = today.getMonth() - birthDate.getUTCMonth();
+        var yearDifference = today.getFullYear() - birthDate.getUTCFullYear();
+        if (monthDifference < 0 || (0 === monthDifference && dayDifference < 0)) {
+            yearDifference--;
+        }
         field.className = 'form-control';
         if (yearDifference < 13) {
-            bdMessage.innerHTML = "Sorry you must at least 13 years old in order to sign up."
+            bdMessage.innerHTML = "Sorry you need to be at least 13 years old in order to sign up."
             return false;
         }
         else {
@@ -101,9 +97,20 @@ function validateBirthdate(field) {
         }
     }
     else {
-        bdMessage.innerHTML = "Please tell me when you were born.";
+        bdMessage.innerHTML = "Please give me your birth date.";
         field.className = 'form-control invalid';
         return false;
     }
 }
 
+function validateName(field) {
+    if (field.value && field.value.trim() != '') {
+        field.className = 'form-control';
+        return true;
+    }
+    else {
+        field.className = 'form-control invalid';
+        field.placeholder = 'Please fill out this required field';
+        return false;
+    }
+}
