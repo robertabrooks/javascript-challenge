@@ -44,14 +44,17 @@ function onSubmit(eventObject) {
     var fields = ['firstName', 'lastName', 'address1', 'city', 'state'];
     var i;
     var formValid = true;
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < fields.length; i++) {
         formValid &= validateName(signup.elements[fields[i]]);
     }
+
     if (signup.elements['occupation'].value == 'other') {
         formValid &= validateName(signup.elements['occupationOther']);
     }
+
     formValid &= validateBirthdate(signup.elements['birthdate']);
     formValid &= validateZip(signup.elements['zip']);
+
     if (!formValid) {
         if(eventObject.preventDefault) {
             eventObject.preventDefault();
@@ -86,6 +89,7 @@ function validateBirthdate(field) {
         if (monthDifference < 0 || (0 === monthDifference && dayDifference < 0)) {
             yearDifference--;
         }
+
         field.className = 'form-control';
         if (yearDifference < 13) {
             bdMessage.innerHTML = "Sorry you need to be at least 13 years old in order to sign up."
